@@ -1,0 +1,157 @@
+type Query {
+  getUser: User
+  getCenters(searchText: String, orderBy: String, order: Int, page: Int, pageSize: Int): [Center!]!
+  getCenter(id: ID!): Center
+  getGroups(searchText: String, orderBy: String, order: Int, page: Int, pageSize: Int): [Group!]!
+  getGroup(id: ID!): Group
+  getStudents(searchText: String, orderBy: String, order: Int, page: Int, pageSize: Int): [Student!]!
+  getStudent(id: ID!): Student
+  getInstructors(searchText: String, orderBy: String, order: Int, page: Int, pageSize: Int): [Instructor!]!
+  getInstructor(id: ID!): Instructor
+  dashboard: Dashboard!
+}
+
+type Mutation {
+  loginWithGoogleToken(token: String!): String!
+  createCenter(center: CenterInput!): Center!
+  createGroup(centerId: ID!, group: GroupInput!): Group!
+  createStudent(student: StudentInput!, groupIds: [ID!]): Student!
+  createInstructor(instructor: InstructorInput!, groupIds: [ID!]): Instructor!
+}
+
+type Center {
+  id: ID!
+  name: String!
+  address: String!
+  city: String!
+  phone: String!
+  email: String!
+  type: String!
+  nature: String!
+  notes: String!
+  active: Boolean!
+  createdAt: String!
+  contacts: [Contact!]!
+  groups: [Group!]!
+}
+
+type Group {
+  id: ID!
+  name: String!
+  type: String!
+  modality: String!
+  timetable: [Timetable!]!
+  center: Center
+  students: [Student!]!
+  instructors: [Instructor!]!
+  active: Boolean!
+  createdAt: String!
+}
+
+type Student {
+  id: ID!
+  name: String!
+  email: String!
+  birthDate: String
+  enrolled: Boolean!
+  active: Boolean!
+  course: String!
+  registrationDate: String!
+  notes: String!
+  contacts: [Contact!]!
+  groups: [Group!]!
+}
+
+type Instructor {
+  id: ID!
+  name: String!
+  corporateEmail: String
+  personalEmail: String
+  phone: String
+  state: String
+  training: String
+  areas: [String!]!
+  geographicalAvailability: [String!]!
+  availability: [Timetable!]!
+  enrolled: Boolean!
+  active: Boolean!
+  notes: String
+  groups: [Group!]!
+}
+
+type Contact {
+  name: String!
+  email: String!
+  phone: String!
+  sendInfo: Boolean
+}
+
+type Timetable {
+  day: String!
+  start: String!
+  end: String!
+}
+
+type Dashboard {
+  userName: String!
+  activeCenters: Int!
+  groups: Int!
+  activeInstructors: Int!
+  activeStudents: Int!
+}
+
+type CenterInput {
+  name: String!
+  address: String
+  city: String
+  phone: String
+  email: String
+  type: String
+  nature: String
+  notes: String
+  contacts: [ContactInput!]
+}
+
+type GroupInput {
+  name: String!
+  type: String
+  modality: String
+  timetable: [TimetableInput!]
+  studentIds: [ID!]
+  instructorIds: [ID!]
+}
+
+type StudentInput {
+  name: String!
+  email: String!
+  birthDate: String
+  course: String
+  notes: String
+  contacts: [ContactInput!]
+}
+
+type InstructorInput {
+  name: String!
+  corporateEmail: String
+  personalEmail: String
+  phone: String
+  state: String
+  training: String
+  areas: [String!]
+  geographicalAvailability: [String!]
+  availability: [TimetableInput!]
+  notes: String
+}
+
+type ContactInput {
+  name: String!
+  email: String!
+  phone: String!
+  sendInfo: Boolean
+}
+
+type TimetableInput {
+  day: String!
+  start: String!
+  end: String!
+}
